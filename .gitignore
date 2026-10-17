@@ -4,8 +4,13 @@ static/
 # generated types
 .astro/
 
-# dependencies
-node_modules/
+# dependencies. No trailing slash: with it, only a real directory is ignored,
+# and a worktree that reuses an install through a `node_modules` symlink shows
+# up as untracked (which also makes `git worktree remove` refuse to run).
+node_modules
+
+# downloaded source figures for tools/palette, and other local caches
+.cache/
 
 # logs
 npm-debug.log*
