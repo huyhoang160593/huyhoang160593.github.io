@@ -1,0 +1,29 @@
+---
+/**
+ * The site's one page header: a "title card", reused unchanged on the home
+ * page, the blog index (and its paginated pages), a post and the 404. The
+ * repetition is the point — a hero on one page and a plain heading on the next
+ * would read as two different things.
+ *
+ * It takes the page's own copy as props; it never invents an eyebrow, a title
+ * or a description. `action` is a named slot for a trailing control (the blog
+ * index's RSS link); leaving it empty is fine.
+ */
+interface Props {
+  /** The slate: a section name, a greeting or a date from the page's copy. */
+  eyebrow: string;
+  title: string;
+  description?: string;
+}
+
+const { eyebrow, title, description } = Astro.props;
+---
+
+<header class="title-card" data-title-card>
+  <div class="title-card-head">
+    <p class="title-card-eyebrow">{eyebrow}</p>
+    <slot name="action" />
+  </div>
+  <h1 class="title-card-title">{title}</h1>
+  {description && <p class="title-card-description">{description}</p>}
+</header>

@@ -17,7 +17,7 @@ const href = alternate ?? switchLangPath(Astro.url.pathname, other);
 <a
   href={href}
   hreflang={other}
-  class="btn btn-ghost btn-sm"
+  class="nav-link text-sm font-semibold"
   title={t("lang.switch")}
 >
   {languages[other]}
