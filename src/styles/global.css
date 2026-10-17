@@ -1,9 +1,264 @@
 @import "tailwindcss";
 
-@plugin 'daisyui' {
-  themes:
-    retro --default,
-    synthwave;
+/* Self-hosted type. Baloo 2 is the display face and Nunito Sans the body face;
+   both are the Vietnamese + latin subsets only, with font-display: swap, and
+   the woff2 files are served from this origin (the @fontsource packages carry
+   them, nothing is fetched at runtime). Space Mono is deliberately deferred
+   until a component needs monospace, so a third family is not shipped.
+   @font-face is written out here, rather than importing @fontsource's
+   per-subset css, because those rules carry no unicode-range: importing two
+   subsets for the same weight would collapse to one. */
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/baloo-2/files/baloo-2-vietnamese-400-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+    U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+    U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/baloo-2/files/baloo-2-latin-400-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("@fontsource/baloo-2/files/baloo-2-vietnamese-600-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+    U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+    U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("@fontsource/baloo-2/files/baloo-2-latin-600-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/baloo-2/files/baloo-2-vietnamese-700-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+    U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+    U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/baloo-2/files/baloo-2-latin-700-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/nunito-sans/files/nunito-sans-vietnamese-400-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+    U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+    U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/nunito-sans/files/nunito-sans-latin-400-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("@fontsource/nunito-sans/files/nunito-sans-vietnamese-600-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+    U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+    U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("@fontsource/nunito-sans/files/nunito-sans-latin-600-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/nunito-sans/files/nunito-sans-vietnamese-700-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+    U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+    U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/nunito-sans/files/nunito-sans-latin-700-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* The two measured themes. Every colour is a value measured from a first-party
+   background painting; see docs/research/bee-and-puppycat.md §5 and
+   docs/adr/0004-measured-palette-and-two-themes.md. `prefersdark` is false on
+   both so `cat-cafe` stays the default whatever the operating system asks for. */
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "cat-cafe";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #f3fdfb;
+  --color-base-200: #f8e2d5;
+  --color-base-300: #adbfab;
+  --color-base-content: #373853;
+
+  --color-primary: #3d88a0;
+  --color-primary-content: #f3fdfb;
+  --color-secondary: #adbfab;
+  --color-secondary-content: #373853;
+  --color-accent: #ce797e;
+  --color-accent-content: #373853;
+  --color-neutral: #373853;
+  --color-neutral-content: #f8e2d5;
+
+  --color-info: #9ce8ef;
+  --color-info-content: #373853;
+  --color-success: #adbfab;
+  --color-success-content: #373853;
+  --color-warning: #e5da8e;
+  --color-warning-content: #373853;
+  --color-error: #ce797e;
+  --color-error-content: #373853;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 0;
+  --noise: 1;
+
+  /* Not daisyUI slots: the tinted ink used for lines and the one hot accent,
+     surfaced as Tailwind tokens (see the @theme block below). */
+  --ink: #373853;
+  --hot: #ce797e;
+}
+
+@plugin "daisyui/theme" {
+  name: "game-center";
+  default: false;
+  prefersdark: false;
+  color-scheme: dark;
+
+  --color-base-100: #353cae;
+  --color-base-200: #355fd9;
+  --color-base-300: #355fd9;
+  --color-base-content: #d4fbf9;
+
+  --color-primary: #4eb5fe;
+  --color-primary-content: #353cae;
+  --color-secondary: #355fd9;
+  --color-secondary-content: #d4fbf9;
+  --color-accent: #c548ad;
+  --color-accent-content: #d4fbf9;
+  --color-neutral: #353cae;
+  --color-neutral-content: #a1ecfd;
+
+  --color-info: #a1ecfd;
+  --color-info-content: #353cae;
+  --color-success: #41f3c1;
+  --color-success-content: #353cae;
+  --color-warning: #f0d293;
+  --color-warning-content: #353cae;
+  --color-error: #c548ad;
+  --color-error-content: #d4fbf9;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 0;
+  --noise: 0;
+
+  --ink: #d4fbf9;
+  --hot: #c548ad;
+}
+
+/* The `ink` and `hot` tokens resolve through the CSS variables each theme sets,
+   so the utilities below follow the active `data-theme` at runtime rather than
+   baking one theme's value into the build. Nothing consumes them yet — the
+   component treatments in ticket #6 will — so they are emitted explicitly. */
+@source inline("text-ink border-ink bg-hot");
+
+@theme {
+  --font-display: "Baloo 2", "Nunito Sans", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: var(--ink);
+  --color-hot: var(--hot);
 }
 
 /* Article typography. The @tailwindcss/typography plugin is deliberately not
