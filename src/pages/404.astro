@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import TitleCard from "../components/TitleCard.astro";
 import { localizePath, useTranslations } from "../i18n/utils";
 
 const lang = "vi" as const;
@@ -7,15 +8,15 @@ const t = useTranslations(lang);
 ---
 
 <BaseLayout title={t("notfound.title")} description={t("notfound.description")}>
-  <section class="hero py-16">
-    <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-3xl font-bold tracking-tight">{t("notfound.title")}</h1>
-        <p class="py-4 text-base-content/60">{t("notfound.description")}</p>
-        <a href={localizePath("/", lang)} class="btn">
-          {t("notfound.backHome")}
-        </a>
-      </div>
-    </div>
-  </section>
+  <TitleCard
+    eyebrow={t("site.name")}
+    title={t("notfound.title")}
+    description={t("notfound.description")}
+  />
+
+  <p class="mt-8">
+    <a href={localizePath("/", lang)} class="contour-btn">
+      {t("notfound.backHome")}
+    </a>
+  </p>
 </BaseLayout>

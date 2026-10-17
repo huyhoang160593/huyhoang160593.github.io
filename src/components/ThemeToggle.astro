@@ -6,10 +6,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<label
-  class="swap swap-rotate btn btn-ghost btn-circle"
-  title={t("theme.toggle")}
->
+<label class="swap swap-rotate contour-icon-btn" title={t("theme.toggle")}>
   <input
     id="theme-toggle"
     type="checkbox"
