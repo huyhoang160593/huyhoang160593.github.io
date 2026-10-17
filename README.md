@@ -4,7 +4,7 @@ A bilingual personal site: a blog in Vietnamese and English, with a CV page plan
 
 - Vietnamese is the default locale and lives at the root (`/`, `/blog/...`); English lives under `/en/...`.
 - Package manager is **`nub`** with a committed `pnpm-lock.yaml` (see `docs/adr/0001`).
-- Styling is Tailwind CSS 4 with daisyUI 5, themed `retro` (light, default) and `synthwave` (dark).
+- Styling is Tailwind CSS 4 with daisyUI 5, themed `cat-cafe` (light, default) and `game-center` (dark).
 
 ## Commands
 
@@ -40,7 +40,7 @@ The file name becomes the URL: `src/content/blog/vi/xin-chao.mdx` is `/blog/xin-
 
 ```
 src/
-  components/     PostCard, Pagination, ThemeToggle, LanguagePicker
+  components/     PostCard, Pagination, TitleCard, ThemeToggle, LanguagePicker
   content/blog/   posts, one folder per locale
   content/cv/     CV data, one file per locale
   i18n/           ui.ts (all UI strings) and utils.ts (locale helpers)

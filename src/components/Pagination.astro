@@ -17,27 +17,27 @@ const hasNext = currentPage < lastPage;
 
 {lastPage > 1 && (
   <nav
-    class="mt-10 flex items-center justify-between gap-2"
+    class="mt-12 flex items-center justify-between gap-3"
     aria-label={t("blog.page")}
   >
     {hasPrevious ? (
-      <a href={href(currentPage - 1)} class="btn btn-sm" rel="prev">
+      <a href={href(currentPage - 1)} class="contour-btn" rel="prev">
         {t("blog.previous")}
       </a>
     ) : (
-      <span class="btn btn-sm btn-disabled" aria-disabled="true">
+      <span class="contour-btn" aria-disabled="true">
         {t("blog.previous")}
       </span>
     )}
-    <span class="text-sm text-base-content/60">
+    <span class="text-sm font-semibold">
       {t("blog.page")} {currentPage}/{lastPage}
     </span>
     {hasNext ? (
-      <a href={href(currentPage + 1)} class="btn btn-sm" rel="next">
+      <a href={href(currentPage + 1)} class="contour-btn" rel="next">
         {t("blog.next")}
       </a>
     ) : (
-      <span class="btn btn-sm btn-disabled" aria-disabled="true">
+      <span class="contour-btn" aria-disabled="true">
         {t("blog.next")}
       </span>
     )}

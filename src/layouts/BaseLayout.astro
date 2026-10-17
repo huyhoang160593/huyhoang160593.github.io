@@ -2,7 +2,13 @@
 import "../styles/global.css";
 import LanguagePicker from "../components/LanguagePicker.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import { getLangFromUrl, localizePath, useTranslations } from "../i18n/utils";
+import {
+  getLangFromUrl,
+  localizePath,
+  stripLangPrefix,
+  useTranslations,
+} from "../i18n/utils";
+import { DEFAULT_THEME, THEMES } from "../lib/theme";
 
 interface Props {
   title: string;
@@ -18,10 +24,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle =
   title === t("site.name") ? title : `${title} · ${t("site.name")}`;
 const year = new Date().getFullYear();
+// For the nav's wavy active underline: strip a trailing slash and the `/en`
+// prefix, then ask whether this is the home or the blog section.
+const barePath = stripLangPrefix(Astro.url.pathname.replace(/\/+$/, "") || "/");
+const isHome = barePath === "/";
+const isBlog = barePath === "/blog" || barePath.startsWith("/blog/");
 ---
 
 <!doctype html>
-<html lang={lang} data-theme="retro">
+<html lang={lang} data-theme={DEFAULT_THEME}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,31 +49,39 @@ const year = new Date().getFullYear();
     />
     <meta name="generator" content={Astro.generator} />
     {/* Runs before the first paint so a chosen theme is applied without a
-         flash. Without a saved choice the server-rendered default wins. */}
-    <script is:inline>
+         flash. The theme names come from `../lib/theme`; `define:vars` on an
+         `is:inline` script inlines them here, because this script must not be
+         deferred or bundled. An absent or unrecognised saved value falls back
+         to the default. */}
+    <script
+      is:inline
+      define:vars={{ defaultTheme: DEFAULT_THEME, themes: THEMES }}
+    >
       (function () {
         try {
           const saved = localStorage.getItem("theme");
-          if (saved === "retro" || saved === "synthwave") {
-            document.documentElement.setAttribute("data-theme", saved);
-          }
+          const theme = themes.indexOf(saved) === -1 ? defaultTheme : saved;
+          document.documentElement.setAttribute("data-theme", theme);
         } catch {}
       })();
     </script>
   </head>
   <body class="flex min-h-screen flex-col bg-base-100 text-base-content">
-    <header class="border-b border-base-300">
-      <nav class="navbar mx-auto w-full max-w-3xl px-4">
-        <div class="navbar-start">
+    <header class="site-nav">
+      <nav class="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-4 py-3">
+        <a
+          href={localizePath("/", lang)}
+          class="nav-link nav-mark"
+          aria-current={isHome ? "page" : undefined}
+        >
+          {t("site.name")}
+        </a>
+        <div class="flex items-center gap-2">
           <a
-            href={localizePath("/", lang)}
-            class="btn btn-ghost px-2 text-lg font-semibold"
+            href={localizePath("/blog", lang)}
+            class="nav-link text-sm font-semibold"
+            aria-current={isBlog ? "page" : undefined}
           >
-            {t("site.name")}
-          </a>
-        </div>
-        <div class="navbar-end gap-1">
-          <a href={localizePath("/blog", lang)} class="btn btn-ghost btn-sm">
             {t("nav.blog")}
           </a>
           <LanguagePicker alternate={alternate} />
@@ -75,13 +94,13 @@ const year = new Date().getFullYear();
       <slot />
     </main>
 
-    <footer class="border-t border-base-300">
-      <div class="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-2 px-4 py-6 text-sm text-base-content/70">
+    <footer class="site-footer">
+      <div class="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-2 px-4 py-6 text-sm">
         <p>
           © {year} {t("site.name")}
         </p>
         <p class="flex items-center gap-3">
-          <a href={localizePath("/rss.xml", lang)} class="link link-hover">
+          <a href={localizePath("/rss.xml", lang)} class="link-ink">
             {t("blog.rss")}
           </a>
           <span>{t("footer.builtWith")}</span>

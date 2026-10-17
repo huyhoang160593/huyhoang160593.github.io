@@ -14,34 +14,27 @@ interface Props {
 
 const { post, lang } = Astro.props;
 const t = useTranslations(lang);
+const href = localizePath(`/blog/${postSlug(post)}`, lang);
 ---
 
-<article class="card card-border bg-base-100">
-  <div class="card-body">
-    <h2 class="card-title">
-      <a
-        href={localizePath(`/blog/${postSlug(post)}`, lang)}
-        class="link-hover"
-      >
+<article class="contour-card animate-in">
+  <div class="p-5">
+    <h2 class="text-xl font-bold leading-tight">
+      <a href={href} class="card-link">
         {post.data.title}
       </a>
     </h2>
-    <p class="text-sm text-base-content/60">
+    <p class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold tracking-wider uppercase">
       <time datetime={post.data.pubDate.toISOString()}>
         {formatDate(post.data.pubDate, lang)}
       </time>
-      {post.data.draft && (
-        <span class="badge badge-warning badge-sm ms-2">{t("blog.draft")}</span>
-      )}
+      {post.data.draft && <span class="chip">{t("blog.draft")}</span>}
     </p>
-    <p>{post.data.description}</p>
-    <div class="card-actions justify-end">
-      <a
-        href={localizePath(`/blog/${postSlug(post)}`, lang)}
-        class="btn btn-sm"
-      >
+    <p class="mt-3">{post.data.description}</p>
+    <p class="mt-4 flex justify-end">
+      <a href={href} class="contour-btn">
         {t("blog.readMore")}
       </a>
-    </div>
+    </p>
   </div>
 </article>

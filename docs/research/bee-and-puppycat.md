@@ -273,75 +273,180 @@ Derived strictly from the sourced traits in section 3; the _design_ translation 
 ## 5. Design tokens for this site
 
 Context for the tokens: this repo runs Astro 7 with Tailwind 4 and daisyUI 5
-(`package.json`), and `src/styles/global.css` currently registers two daisyUI themes —
-`retro` (default) and `synthwave`. The tokens below are **proposed originals**, not values taken
-from the show. **No hex value in this section is sourced; every one is `[inference]`.** They are
-derived from the _traits_ above (warm ink lines, chalky pastels, cream paper, periwinkle space,
-one hot accent), and they copy no asset, logo, character or typeface used by the show.
+(`package.json`), and `src/styles/global.css` registers two daisyUI themes —
+`cat-cafe` (default) and `game-center`. The sketches below are the palettes as they ship;
+each colour is still selected through the traits in section 4, so it carries a reason;
+what separates this from an inferred palette is that **every hex is a measured value from a
+first-party background painting**, and the trait column names the trait it answers instead
+of guessing at one.
 
-### 5.1 Palette
+No show artwork is redistributed. Images are cited by URL only and never committed to this
+repo, and no colour is lifted from a logo, character or title card — only the average
+colours of painted backgrounds.
 
-Light ("paper") theme:
+### 5.1 How the palettes were measured
 
-| Token          | Hex       | Role                               | Where it comes from `[inference]`                                    |
-| -------------- | --------- | ---------------------------------- | -------------------------------------------------------------------- |
-| `--paper`      | `#F6EFE3` | page background                    | warm cream, not white — trait 2 (softness), trait 4 (painted ground) |
-| `--paper-2`    | `#FFFBF5` | raised card                        | a half-step brighter paper                                           |
-| `--ink`        | `#3B3340` | text + borders                     | warm plum-black — trait 1 (never pure black)                         |
-| `--line`       | `#C9BDC6` | hairlines, dividers                | a _tinted_ grey line, so borders never read as black                 |
-| `--bee`        | `#F2A2B4` | primary surface / brand            | chalky pink — Bee as the brand colour                                |
-| `--bee-deep`   | `#D65C7C` | primary content-on-light           | the readable weight of the same pink                                 |
-| `--puppy`      | `#F4E4CE` | secondary surface                  | cream fur tone, used for quiet panels                                |
-| `--space`      | `#2C3358` | dark surface, footers, code blocks | deep periwinkle set — the "interplanetary" half                      |
-| `--periwinkle` | `#8E9BE8` | info, links on dark                | space-lane accent                                                    |
-| `--mint`       | `#9FD8C0` | success / positive tag             | cool counterweight to the pinks                                      |
-| `--butter`     | `#F6D786` | warning / highlight                | warm, low-saturation yellow                                          |
-| `--bloom`      | `#FF5C8A` | single hot accent, CTAs            | trait 3 — ornament has a loudest voice, used sparingly               |
-| `--moss`       | `#7BA36B` | success text                       | darkened for contrast on paper                                       |
-| `--ember`      | `#E9924A` | warning text                       | "                                                                    |
-| `--coral`      | `#E2574C` | error / destructive                | a pink-leaning red, on-brand rather than system-red                  |
+The method, stated once for both palettes:
 
-Dark ("space") theme is the same palette with the ground swapped: `--paper → #1B2036`,
-`--paper-2 → #242B47`, `--ink → #F4E4CE` (ink and ground invert), `--bee → #F2A2B4` held,
-`--bloom → #FF7FA3` (lifted for dark-mode contrast). `[inference]`
+- decode the source image and sample its pixels on a fixed grid — the grid is part of the
+  record, and each palette below states the one its values reproduce under;
+- run **k-means with `k = 12`** initialised from a fixed seed, drop clusters below 0.4 %
+  weight, merge clusters whose centroids sit closer than a **merge distance of 8** in RGB,
+  and sort the survivors dark → light.
 
-daisyUI 5 accepts any CSS colour format in theme variables, so hex is fine; daisyUI documents
-`oklch` as its default. Sketch, to sit beside the existing `retro`/`synthwave` entries in
-`src/styles/global.css`:
+The merge distance is load-bearing. At a coarser merge (for instance 14) the small,
+saturated clusters are absorbed into their neighbours and the accents disappear: the cat
+café loses its red roof and its near-white clouds, which are exactly the colours the
+palette has to keep. `k = 12` gives those accents a cluster of their own; a merge distance
+of 8 folds only near-identical clusters.
+
+The sampling grid is load-bearing too, and it is **not the same for the two palettes**. The
+dark palette reproduces on a grid of about 30 000 samples whatever the image's size
+(`samples = 30 000`); the light one reproduces on **every third pixel** of the summer panel
+(`stride = 3`). They are not interchangeable: at 30 000 samples the summer panel returns
+`#dcc69f` where the denser grid returns the cream `#f8e2d5` and the straw `#e5da8e` as
+separate clusters, and `#99cca8` in place of the sage `#adbfab`, with three more steps
+shifting by a channel or two. Each palette's values are therefore the ones its own grid
+produces, and the grid is stated beside it.
+
+The scripts are in `tools/palette/`, and were re-run to confirm every value below:
+`check-brief.mjs` does that re-run and fails if a hex recorded here cannot be reproduced
+from the figure and the grid named beside it.
+
+### 5.2 Light theme — `cat-cafe`
+
+Measured from the **summer panel** (top-left) alone of
+<https://hanstseng.art/wp-content/uploads/2017/03/cat-cafe-2-summer-scaled.jpg>; the scene
+is a cat café. The file is one scene drawn four times, once per season, in a 2×2 sheet, and
+only the top-left summer panel is measured. The other three panels are not averaged in,
+because four lighting conditions averaged together would mute the summer accents the
+palette exists to carry. Measured on every third pixel, `stride = 3` — see §5.1; the
+30 000-sample grid returns a different, flatter set.
+
+| Hex       | Role in the theme              | daisyUI slot              | Trait                      |
+| --------- | ------------------------------ | ------------------------- | -------------------------- |
+| `#f3fdfb` | page ground                    | `base-100`                | 4 — painted ground         |
+| `#f8e2d5` | raised surface, quiet panel    | `base-200`                | 2 — soft shapes            |
+| `#e5da8e` | warning / highlight            | `warning`                 | 3 — ornament voice         |
+| `#9ce8ef` | info / cool fill               | `info`                    | 5 — mood carried by colour |
+| `#adbfab` | hairline, quiet success        | `base-300`, `success`     | 1 — tinted line            |
+| `#3d88a0` | primary, links                 | `primary`                 | 5 — mood carried by colour |
+| `#ce797e` | error, the single hot accent   | `error`                   | 3 — the café's red roof    |
+| `#373853` | ink: text, borders, focus ring | `base-content`, `neutral` | 1 — never black            |
+
+The four clusters this palette does not ship are the mid-luminance mixtures the study
+produces between these eight; dropping them loses no accent.
+
+Slot sketch — every hex below is one of the eight measured values above:
 
 ```css
 @plugin "daisyui/theme" {
-  name: "beeandpuppycat";
-  default: false;
+  name: "cat-cafe";
+  default: true;
   prefersdark: false;
   color-scheme: light;
 
-  --color-base-100: #fffbf5;
-  --color-base-200: #f6efe3;
-  --color-base-300: #e9dfd0;
-  --color-base-content: #3b3340;
+  --color-base-100: #f3fdfb;
+  --color-base-200: #f8e2d5;
+  --color-base-300: #adbfab;
+  --color-base-content: #373853;
 
-  --color-primary: #f2a2b4;
-  --color-primary-content: #4a2433;
-  --color-secondary: #f4e4ce;
-  --color-secondary-content: #3b3340;
-  --color-accent: #ff5c8a;
-  --color-accent-content: #ffffff;
-  --color-neutral: #2c3358;
-  --color-neutral-content: #f4e4ce;
+  --color-primary: #3d88a0;
+  --color-primary-content: #f3fdfb;
+  --color-secondary: #adbfab;
+  --color-secondary-content: #373853;
+  --color-accent: #ce797e;
+  --color-accent-content: #373853;
+  --color-neutral: #373853;
+  --color-neutral-content: #f8e2d5;
 
-  --color-info: #8e9be8;
-  --color-success: #7ba36b;
-  --color-warning: #e9924a;
-  --color-error: #e2574c;
+  --color-info: #9ce8ef;
+  --color-info-content: #373853;
+  --color-success: #adbfab;
+  --color-success-content: #373853;
+  --color-warning: #e5da8e;
+  --color-warning-content: #373853;
+  --color-error: #ce797e;
+  --color-error-content: #373853;
 
-  --radius-selector: 9999px;
-  --radius-field: 0.5rem;
-  --radius-box: 1.25rem;
+  --border: 2px;
+  --depth: 0;
+  --noise: 1;
 }
 ```
 
-### 5.2 Type
+Two `-content` slots take the measured ink `#373853` rather than the near-white `#f3fdfb`: on
+the café red `#ce797e`, ink measures **3.59:1** where the near-white measures **3.04:1**, and
+ink is the best the eight measured colours offer for those two slots.
+
+### 5.3 Dark theme — `game-center`
+
+Measured from <https://hanstseng.art/wp-content/uploads/2016/11/bpcbgarcade.png>; the scene
+is the game centre / arcade interior. Measured on a grid of about 30 000 samples,
+`samples = 30 000` — see §5.1.
+
+| Hex       | Role in the theme               | daisyUI slot          | Trait                      |
+| --------- | ------------------------------- | --------------------- | -------------------------- |
+| `#d4fbf9` | text / ink                      | `base-content`        | 1 — no pure-black ink      |
+| `#a1ecfd` | info / links on dark            | `info`                | 5 — mood carried by colour |
+| `#4eb5fe` | primary                         | `primary`             | 5 — mood carried by colour |
+| `#41f3c1` | success                         | `success`             | 3 — ornament voice         |
+| `#f0d293` | warning / highlight             | `warning`             | 3 — ornament voice         |
+| `#c548ad` | accent, the single hot accent   | `accent`              | 3 — the magenta sign       |
+| `#355fd9` | secondary surface               | `secondary`           | 5 — mood carried by colour |
+| `#353cae` | page ground (the darkest value) | `base-100`, `neutral` | 4 — painted ground         |
+
+Slot sketch — every hex below is one of the eight measured values above:
+
+```css
+@plugin "daisyui/theme" {
+  name: "game-center";
+  default: false;
+  prefersdark: false;
+  color-scheme: dark;
+
+  --color-base-100: #353cae;
+  --color-base-200: #355fd9;
+  --color-base-300: #355fd9;
+  --color-base-content: #d4fbf9;
+
+  --color-primary: #4eb5fe;
+  --color-primary-content: #353cae;
+  --color-secondary: #355fd9;
+  --color-secondary-content: #d4fbf9;
+  --color-accent: #c548ad;
+  --color-accent-content: #d4fbf9;
+  --color-neutral: #353cae;
+  --color-neutral-content: #a1ecfd;
+
+  --color-info: #a1ecfd;
+  --color-info-content: #353cae;
+  --color-success: #41f3c1;
+  --color-success-content: #353cae;
+  --color-warning: #f0d293;
+  --color-warning-content: #353cae;
+  --color-error: #c548ad;
+  --color-error-content: #d4fbf9;
+
+  --border: 2px;
+  --depth: 0;
+  --noise: 0;
+}
+```
+
+`prefersdark` is `false` here as on `cat-cafe`, so the light theme stays the default whatever
+the operating system asks for and the toggle is the only way into the dark one. The third base
+step takes `#355fd9` rather than the sketch's first choice of `#4eb5fe`: `#d4fbf9` on
+`#4eb5fe` measures only **2.03:1**, so the measured values were reordered to `#355fd9` and all
+three base steps now clear **4.5:1**. `#4eb5fe` stays `primary`.
+
+**The one deliberate consequence.** The darkest colour in the dark palette is `#353cae`, a
+**mid indigo** rather than a near-black, so that theme reads blue, not black, and keeps the
+arcade's own temperature instead of being padded toward `#000`. The light palette is the
+mirror case: it does carry a measured near-white, `#f3fdfb`, so its ground needs no invented
+colour either. Both ends of both palettes are measured; nothing was made up to fit a slot.
+
+### 5.4 Type
 
 Constraint that matters on this repo: the site is **bilingual vi/en** with Vietnamese as the
 default locale (`astro.config.mjs`), so any face chosen must ship a **Vietnamese** subset.
@@ -357,113 +462,76 @@ Verified against Google Fonts' own font metadata
 | **Space Mono**  | Monospace | ✅                                                                 |
 | **Fredoka**     | Sans      | ❌ — **no Vietnamese subset; do not use as the display face here** |
 
-Proposed pairing `[inference]`:
+The decision:
 
-- **Display — `Baloo 2`** (SIL OFL, Vietnamese ✅). Rounded, slightly retro, heavy weights hold up
-  at poster size; matches trait 2 and the "title card as poster" habit (trait 6). Use `700`/`800`.
-- **Body — `Nunito Sans`** (SIL OFL, Vietnamese ✅). Open counters, comfortable at 16–18px, keeps
-  long Vietnamese diacritic runs legible.
-- **Accent / mono — `Space Mono`** (SIL OFL, Vietnamese ✅). A retro-technical monospace for
-  metadata, dates, tag chips and code; the name is a happy coincidence, not a licence to imitate
-  the show's lettering.
-- Optional warmth upgrade: `Quicksand` for nav links and buttons instead of Nunito Sans.
-- Load as three families with `font-display: swap`, and set
-  `font-variant-numeric: tabular-nums` on dates.
+- **Display — `Baloo 2`** (SIL OFL, Vietnamese ✅). Rounded, slightly retro, heavy weights
+  hold up at poster size; matches trait 2 and the "title card as poster" habit (trait 6).
+- **Body — `Nunito Sans`** (SIL OFL, Vietnamese ✅). Open counters, comfortable at 16–18px,
+  keeps long Vietnamese diacritic runs legible.
+- **Deferred — `Space Mono`** (SIL OFL, Vietnamese ✅). Deliberately not shipped: no
+  component needs monospace today, so a third family would be unused weight. It is the face
+  to reach for when one does.
 
-### 5.3 Borders, radii, shadows
+Both shipped families are self-hosted with the Vietnamese and latin subsets only and
+`font-display: swap`; the site adds no third-party font request.
 
-`[inference]`, from trait 1 (coloured line) and trait 2 (soft shapes):
+### 5.5 Contour, grain and depth
 
-- **Borders:** `2px` on cards, chips and buttons — thick enough to read as a drawn contour.
-  Colour is `--ink` in light mode and the inverse in dark; dividers fall back to `--line`.
-- **Radii:** chips `9999px`; buttons `0.75rem`; fields `0.5rem`; cards and panels `1.25rem`;
-  hero/title-card blocks `1.75rem`.
-- **Shadow:** avoid soft blur entirely. Use a hard **sticker offset**:
-  `box-shadow: 4px 4px 0 0 var(--ink)`, dropping to `2px 2px 0` for small chips and `0 0 0`
-  on press (the element translates `2px 2px` to meet its own shadow). This is the single
-  cheapest way to read as "illustrated" rather than "SaaS".
+From trait 1 (coloured line) and trait 2 (soft shapes):
 
-### 5.4 Texture and overlay recipe
+- **Border: `2px`.** Thick enough to read as a drawn contour rather than a UI hairline, and
+  drawn in the theme's ink — `base-content` (`#373853` on `cat-cafe`, `#d4fbf9` on
+  `game-center`) — never `#000`. This is the daisyUI `--border` value.
+- **Noise: `1` on `cat-cafe`, `0` on `game-center`.** Paper grain belongs on the near-white
+  ground; on the saturated indigo ground it reads as dirt, so the dark theme turns it off.
+- **Depth: `0` on both.** daisyUI's `--depth` adds a soft 3D shadow to components; the
+  contour language instead draws its own hard, unblurred offset shadow (a sticker offset,
+  trait 2), and the two must not both be on. Pressing an element translates it into its own
+  shadow rather than softening it.
+- **Radii** follow trait 2 — round, pill selectors — but the exact values are settled with
+  the component treatments, not here.
 
-`[inference]` — three layers, all optional, all cheap:
+**Deliberately out of scope for this pass: the ornament budget.** Trait 3 is real — "I put
+it everywhere" — but a star field, a sparkle glyph and a scanline are each cheap to add and
+easy to over-add, so the frequency budget that keeps them charming is a later decision. This
+brief records the intent; it does not ship ornament.
 
-1. **Paper grain.** An inline SVG `feTurbulence` (baseFrequency ≈ `0.8`, 1 octave) rendered to a
-   data-URI and applied as a `background-image` at **3–5% opacity** over `--paper`. Nothing
-   heavier; grain above ~6% starts to fight text contrast.
-2. **Star field.** Two or three `radial-gradient` dots tiled at low opacity, used **only** in the
-   title-card header and the footer — not site-wide. This is the disciplined version of "I put it
-   everywhere".
-3. **Sparkle glyph.** One reusable inline SVG star, used as a section separator and as a hover
-   affordance on cards. Frequency budget: at most one per viewport-height of content. That budget
-   is what keeps trait 3 charming instead of noisy.
+### 5.6 Component treatments, in intent
 
-Optional, use with restraint: a 2px `repeating-linear-gradient` scanline at ~2% opacity over dark
-surfaces only.
+Written against the components that already exist in this repo —
+`src/components/PostCard.astro` (which uses `card card-border bg-base-100`) and
+`src/layouts/BaseLayout.astro`. These map the show's ideas onto that surface; the names
+below are daisyUI slots and the measured palette above, not new tokens.
 
-### 5.5 Motion
+**a. Post card** — the show's "painted room with a title on it". A `base-200` panel carrying
+a `2px` `base-content` contour and a hard offset shadow in the ink colour; on hover it lifts
+and its shadow grows, on the overshoot curve. Title in `Baloo 2`; date line small and
+letterspaced; the single hot accent (`error` on `cat-cafe`, `accent` on `game-center`) is
+recorded but not placed — the ornament budget keeps a hover sparkle out of this pass (§5.5).
 
-`[inference]`, from trait 7 (slow, quiet, low-stakes) plus a small pop for the show's comic beats.
+**b. Nav bar** — thin and quiet. A `base-100` strip with a `2px` `base-content` rule along
+the bottom and a translucent blur behind it. Wordmark in `Baloo 2`, set as text: **do not
+reproduce the show's logo art.** The active link gets a wavy 2px underline — a hand-drawn
+feel from a CSS primitive.
 
-| Purpose               | Duration                   | Easing                                                 |
-| --------------------- | -------------------------- | ------------------------------------------------------ |
-| hover / colour change | `120ms`                    | `ease-out`                                             |
-| card lift, chip press | `220ms`                    | `cubic-bezier(0.34, 1.56, 0.64, 1)` (slight overshoot) |
-| layout / theme switch | `280ms`                    | `cubic-bezier(0.2, 0.8, 0.2, 1)`                       |
-| entrance (staggered)  | `420ms`, `60–90ms` stagger | `cubic-bezier(0.22, 1, 0.36, 1)`                       |
+**c. Tag chip** — the sparkle/bow unit. A pill with a `2px` ink contour and a sticker shadow;
+pressing flattens the shadow into the contour. The colour-coding — a low tint of the tag's own
+colour as its fill, so a tag list reads like a colour-coded sticker sheet — is **deferred**: the
+site has no tag vocabulary, so mapping a tag to a tint would need invented data. Until one
+exists, the ink contour and the sticker shadow carry the intent.
 
-Rules: never animate more than ~10 elements at once; no parallax; no scroll-jacking; keep one
-"pop" (the overshoot curve) for interactive feedback only. Wrap all of it in
-`@media (prefers-reduced-motion: no-preference)` and let the reduced-motion path fall back to
-instant state changes.
+**d. Page header / "title card"** — the strongest idea in the show to reuse. A full-width
+`base-200` panel framed by `2px` ink rules above and below: an eyebrow in small letterspaced
+caps (a date or a section name, like an episode slate), a `Baloo 2` title, and a description
+in `Nunito Sans`. The same block is reused on the home page, the blog index, a post and the
+404 — that repetition is what makes it read as a title card rather than a hero.
 
-### 5.6 Example component treatments
-
-Written against the components that already exist in this repo — `src/components/PostCard.astro`
-(which uses `card card-border bg-base-100`) and `src/layouts/BaseLayout.astro`.
-
-**a. Post card** — the show's "painted room with a title on it" `[inference]`
-
-- Container: `card bg-base-200 border-2 border-[--ink] rounded-[1.25rem] shadow-[4px_4px_0_0_var(--ink)]`.
-- Hover: translate `-2px, -2px`, shadow grows to `6px 6px 0`, `220ms` overshoot curve.
-- Title in `Baloo 2` `700`, `text-2xl`, `--ink`.
-- Date line in `Space Mono` `uppercase tracking-wider text-xs`, `--ink/60`.
-- One sparkle glyph in the top-right corner at `--bloom`, appears on hover only.
-- Draft badge becomes a `--butter` pill with a `2px` ink border rather than daisyUI's default fill.
-
-**b. Nav bar** — thin, quiet, always present `[inference]`
-
-- Strip: `navbar bg-base-100/85 backdrop-blur border-b-2 border-[--ink] sticky top-0`.
-- Wordmark in `Baloo 2` `800` with `tracking-tight`; **set the existing text wordmark, do not
-  reproduce the show's logo art.**
-- Links in `Quicksand` `500`; active link gets a 2px wavy underline
-  (`text-decoration-style: wavy`), i.e. a hand-drawn feel from a CSS primitive.
-- Theme toggle and language picker keep daisyUI's `btn btn-ghost btn-sm` geometry, restyled to the
-  sticker shadow on hover.
-
-**c. Tag chip** — the sparkle/bow unit `[inference]`
-
-- Pill: `rounded-full border-2 border-[--ink] px-3 py-0.5 text-xs font-medium`.
-- Fill is a **tint of the tag's own colour** at ~18% (e.g. `--mint` tint for a "life" tag,
-  `--periwinkle` for "tech"), so a tag list reads like a colour-coded sticker sheet.
-- Count badge or leading star glyph in `Space Mono` at `10px`.
-- Press state: shadow `0 0 0`, translate `1px 1px`.
-
-**d. Page header / "title card"** — the strongest idea in the show to reuse `[inference]`
-
-- Full-width cream panel (`--paper-2`) with `2px` ink rules above and below — a drawn frame.
-- Eyebrow in `Space Mono` caps with wide tracking (e.g. a date or a section name), like an episode
-  slate.
-- Title in `Baloo 2` `800`, `text-4xl`–`text-5xl`, tight leading, centred or left-aligned but
-  _consistently_ placed.
-- Description capped at `60ch` in `Nunito Sans`.
-- Corner star field at 4% opacity; one sparkle glyph dividing eyebrow from title.
-- Same block is reused on the blog index, the post page and the 404 — that repetition is what makes
-  it read as a title card rather than a hero.
-
-**e. Primary button** `[inference]` — `btn` with `bg-[--bee] text-[--ink] border-2 border-[--ink]`
-and the same sticker shadow; label in `Quicksand` `600`; press translates into its own shadow.
-Reserve `--bloom` for exactly one thing per screen (the newsletter, the "read more", the search) so
-the loudest colour keeps meaning something.
+**e. Primary button** — an ink-contoured control on `base-100` with the same sticker shadow;
+pressing translates it into its own shadow. A saturated `primary` fill was the first choice but
+was dropped: it would have to carry body-size text and every `-content` pair tops out at
+**3.89:1**, so the contour carries the emphasis instead. Reserve the single hot
+accent for exactly one thing per screen, so the loudest measured colour keeps meaning
+something.
 
 ---
 
@@ -524,6 +592,7 @@ This list was re-verified after the first draft, by fetching each URL and each q
 ## Copyright note
 
 This document is analysis and a design brief. It contains short quoted phrases only, no script
-dialogue and no lyrics. All tokens in section 5 are original proposals: the palette was chosen from
-the traits in section 4, and the fonts are open-licensed families unrelated to the show's lettering.
-Nothing here licenses reproducing the show's logo, characters, artwork or title cards.
+dialogue and no lyrics. The two palettes in section 5 are measured average colours of first-party
+background paintings, cited by URL and never committed; no asset, logo or character art is copied.
+The fonts are open-licensed families unrelated to the show's lettering. Nothing here licenses
+reproducing the show's logo, characters, artwork or title cards.

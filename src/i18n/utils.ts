@@ -29,10 +29,16 @@ export function localizePath(path: string, lang: Lang): string {
   return rooted === "/" ? `/${lang}/` : `/${lang}${rooted}`;
 }
 
+/** Strip the `/en` locale prefix from a pathname, if present. The default
+ * locale is unprefixed, so this turns a localized path back into its
+ * locale-neutral shape; the same page can then be re-prefixed for another. */
+export function stripLangPrefix(pathname: string): string {
+  return pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+}
+
 /** The same page in the other locale, for a path whose shape is shared. */
 export function switchLangPath(pathname: string, target: Lang): string {
-  const stripped = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
-  return localizePath(stripped, target);
+  return localizePath(stripLangPrefix(pathname), target);
 }
 
 export function formatDate(date: Date, lang: Lang): string {

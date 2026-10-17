@@ -1,19 +1,17 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { DARK_THEME } from "../lib/theme";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<label
-  class="swap swap-rotate btn btn-ghost btn-circle"
-  title={t("theme.toggle")}
->
+<label class="swap swap-rotate contour-icon-btn" title={t("theme.toggle")}>
   <input
     id="theme-toggle"
     type="checkbox"
     class="theme-controller"
-    value="synthwave"
+    value={DARK_THEME}
     aria-label={t("theme.toggle")}
   />
   {/* Adapted from Phosphor Icons (MIT), the sun and moon used by the site
@@ -42,22 +40,24 @@ const t = useTranslations(lang);
   </svg>
 </label>
 
-<script is:inline>
+<script is:inline define:vars={{ darkTheme: DARK_THEME }}>
   (function () {
     const input = document.getElementById("theme-toggle");
     if (!input) return;
     try {
-      if (localStorage.getItem("theme") === "synthwave") input.checked = true;
+      if (localStorage.getItem("theme") === darkTheme) input.checked = true;
     } catch {}
   })();
 </script>
 
 <script>
+  import { themeForToggle } from "../lib/theme";
+
   const input = document.getElementById(
     "theme-toggle",
   ) as HTMLInputElement | null;
   input?.addEventListener("change", () => {
-    const theme = input.checked ? "synthwave" : "retro";
+    const theme = themeForToggle(input.checked);
     document.documentElement.setAttribute("data-theme", theme);
     try {
       localStorage.setItem("theme", theme);
