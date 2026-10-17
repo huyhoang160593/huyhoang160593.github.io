@@ -13,7 +13,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "verify": "nub run lint && nub run build"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.0",
