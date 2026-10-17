@@ -1,0 +1,47 @@
+---
+import {
+  formatDate,
+  localizePath,
+  useTranslations,
+  type Lang,
+} from "../i18n/utils";
+import { postSlug, type Post } from "../lib/posts";
+
+interface Props {
+  post: Post;
+  lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<article class="card card-border bg-base-100">
+  <div class="card-body">
+    <h2 class="card-title">
+      <a
+        href={localizePath(`/blog/${postSlug(post)}`, lang)}
+        class="link-hover"
+      >
+        {post.data.title}
+      </a>
+    </h2>
+    <p class="text-sm text-base-content/60">
+      <time datetime={post.data.pubDate.toISOString()}>
+        {formatDate(post.data.pubDate, lang)}
+      </time>
+      {post.data.draft && (
+        <span class="badge badge-warning badge-sm ms-2">{t("blog.draft")}</span>
+      )}
+    </p>
+    <p>{post.data.description}</p>
+    <div class="card-actions justify-end">
+      <a
+        href={localizePath(`/blog/${postSlug(post)}`, lang)}
+        class="btn btn-sm"
+      >
+        {t("blog.readMore")}
+      </a>
+    </div>
+  </div>
+</article>

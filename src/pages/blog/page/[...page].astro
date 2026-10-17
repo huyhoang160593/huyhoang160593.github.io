@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PostCard from "../../../components/PostCard.astro";
+import Pagination from "../../../components/Pagination.astro";
+import { getPosts, pageCount, pageSlice } from "../../../lib/posts";
+import { useTranslations } from "../../../i18n/utils";
+
+export async function getStaticPaths() {
+  const posts = await getPosts("vi");
+  const lastPage = pageCount(posts.length);
+
+  return Array.from({ length: lastPage - 1 }, (_, index) => {
+    const currentPage = index + 2;
+    return {
+      params: { page: String(currentPage) },
+      props: { posts: pageSlice(posts, currentPage), currentPage, lastPage },
+    };
+  });
+}
+
+const { posts, currentPage, lastPage } = Astro.props;
+const lang = "vi" as const;
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t("blog.title")} description={t("blog.description")}>
+  <header>
+    <h1 class="text-3xl font-bold tracking-tight">{t("blog.title")}</h1>
+    <p class="mt-2 text-base-content/60">{t("blog.description")}</p>
+  </header>
+
+  <div class="mt-8 grid gap-4">
+    {posts.map((post) => (
+      <PostCard post={post} lang={lang} />
+    ))}
+  </div>
+
+  <Pagination currentPage={currentPage} lastPage={lastPage} lang={lang} />
+</BaseLayout>

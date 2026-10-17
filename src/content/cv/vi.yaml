@@ -1,0 +1,23 @@
+name: The 99's Puppycat
+headline: Lập trình viên (TODO)
+summary: Chỗ này để viết vài dòng tóm tắt lý lịch. (TODO)
+contact:
+  email: hello@example.com
+  github: https://github.com/huyhoang160593
+  website: https://huyhoang160593.github.io
+experience:
+  - role: Vị trí (TODO)
+    org: Công ty (TODO)
+    start: 2024-01
+    summary: Mô tả ngắn về công việc. (TODO)
+    highlights:
+      - Thành tựu thứ nhất. (TODO)
+      - Thành tựu thứ hai. (TODO)
+education:
+  - degree: Ngành học (TODO)
+    org: Trường (TODO)
+    start: 2020-09
+    end: 2024-06
+skills:
+  - TypeScript
+  - Astro

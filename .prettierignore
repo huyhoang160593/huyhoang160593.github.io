@@ -1,0 +1,6 @@
+dist
+.astro
+node_modules
+pnpm-lock.yaml
+# Third-party skill files: kept exactly as published.
+.agents

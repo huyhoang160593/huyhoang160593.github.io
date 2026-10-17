@@ -1,0 +1,23 @@
+name: The 99's Puppycat
+headline: Software developer (TODO)
+summary: A couple of lines summarising the CV go here. (TODO)
+contact:
+  email: hello@example.com
+  github: https://github.com/huyhoang160593
+  website: https://huyhoang160593.github.io
+experience:
+  - role: Position (TODO)
+    org: Company (TODO)
+    start: 2024-01
+    summary: A short description of the role. (TODO)
+    highlights:
+      - First achievement. (TODO)
+      - Second achievement. (TODO)
+education:
+  - degree: Degree (TODO)
+    org: School (TODO)
+    start: 2020-09
+    end: 2024-06
+skills:
+  - TypeScript
+  - Astro
