@@ -11,6 +11,8 @@ const { currentPage, lastPage, lang } = Astro.props;
 const t = useTranslations(lang);
 const href = (number: number) =>
   localizePath(number === 1 ? "/blog" : `/blog/page/${number}`, lang);
+const hasPrevious = currentPage > 1;
+const hasNext = currentPage < lastPage;
 ---
 
 {lastPage > 1 && (
@@ -18,26 +20,26 @@ const href = (number: number) =>
     class="mt-10 flex items-center justify-between gap-2"
     aria-label={t("blog.page")}
   >
-    <a
-      href={href(currentPage - 1)}
-      class:list={["btn btn-sm", { "btn-disabled": currentPage === 1 }]}
-      rel="prev"
-      aria-disabled={currentPage === 1}
-      tabindex={currentPage === 1 ? -1 : 0}
-    >
-      {t("blog.previous")}
-    </a>
+    {hasPrevious ? (
+      <a href={href(currentPage - 1)} class="btn btn-sm" rel="prev">
+        {t("blog.previous")}
+      </a>
+    ) : (
+      <span class="btn btn-sm btn-disabled" aria-disabled="true">
+        {t("blog.previous")}
+      </span>
+    )}
     <span class="text-sm text-base-content/60">
       {t("blog.page")} {currentPage}/{lastPage}
     </span>
-    <a
-      href={href(currentPage + 1)}
-      class:list={["btn btn-sm", { "btn-disabled": currentPage === lastPage }]}
-      rel="next"
-      aria-disabled={currentPage === lastPage}
-      tabindex={currentPage === lastPage ? -1 : 0}
-    >
-      {t("blog.next")}
-    </a>
+    {hasNext ? (
+      <a href={href(currentPage + 1)} class="btn btn-sm" rel="next">
+        {t("blog.next")}
+      </a>
+    ) : (
+      <span class="btn btn-sm btn-disabled" aria-disabled="true">
+        {t("blog.next")}
+      </span>
+    )}
   </nav>
 )}
