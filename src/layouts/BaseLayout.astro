@@ -2,7 +2,12 @@
 import "../styles/global.css";
 import LanguagePicker from "../components/LanguagePicker.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import { getLangFromUrl, localizePath, useTranslations } from "../i18n/utils";
+import {
+  getLangFromUrl,
+  localizePath,
+  stripLangPrefix,
+  useTranslations,
+} from "../i18n/utils";
 import { DEFAULT_THEME, THEMES } from "../lib/theme";
 
 interface Props {
@@ -21,11 +26,8 @@ const fullTitle =
 const year = new Date().getFullYear();
 // For the nav's wavy active underline: strip a trailing slash and the `/en`
 // prefix, then ask whether this is the home or the blog section.
-const barePath = (Astro.url.pathname.replace(/\/+$/, "") || "/").replace(
-  /^\/en(?=\/|$)/,
-  "",
-);
-const isHome = barePath === "/" || barePath === "";
+const barePath = stripLangPrefix(Astro.url.pathname.replace(/\/+$/, "") || "/");
+const isHome = barePath === "/";
 const isBlog = barePath === "/blog" || barePath.startsWith("/blog/");
 ---
 

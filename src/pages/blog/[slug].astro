@@ -37,7 +37,7 @@ const alternate = localizePath(
 >
   <article>
     <TitleCard
-      eyebrow={t("site.name")}
+      eyebrow={formatDate(post.data.pubDate, lang)}
       title={post.data.title}
       description={post.data.description}
     />

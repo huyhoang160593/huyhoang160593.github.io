@@ -273,12 +273,12 @@ Derived strictly from the sourced traits in section 3; the _design_ translation 
 ## 5. Design tokens for this site
 
 Context for the tokens: this repo runs Astro 7 with Tailwind 4 and daisyUI 5
-(`package.json`), and `src/styles/global.css` currently registers two daisyUI themes —
-`retro` (default) and `synthwave`. The tokens below replace that pair with two measured
-palettes. Each colour is still selected through the traits in section 4, so it carries a
-reason; what separates this from an inferred palette is that **every hex is a measured
-value from a first-party background painting**, and the trait column names the trait it
-answers instead of guessing at one.
+(`package.json`), and `src/styles/global.css` registers two daisyUI themes —
+`cat-cafe` (default) and `game-center`. The sketches below are the palettes as they ship;
+each colour is still selected through the traits in section 4, so it carries a reason;
+what separates this from an inferred palette is that **every hex is a measured value from a
+first-party background painting**, and the trait column names the trait it answers instead
+of guessing at one.
 
 No show artwork is redistributed. Images are cited by URL only and never committed to this
 repo, and no colour is lifted from a logo, character or title card — only the average
@@ -343,7 +343,7 @@ Slot sketch — every hex below is one of the eight measured values above:
   --color-secondary: #adbfab;
   --color-secondary-content: #373853;
   --color-accent: #ce797e;
-  --color-accent-content: #f3fdfb;
+  --color-accent-content: #373853;
   --color-neutral: #373853;
   --color-neutral-content: #f8e2d5;
 
@@ -354,13 +354,17 @@ Slot sketch — every hex below is one of the eight measured values above:
   --color-warning: #e5da8e;
   --color-warning-content: #373853;
   --color-error: #ce797e;
-  --color-error-content: #f3fdfb;
+  --color-error-content: #373853;
 
   --border: 2px;
   --depth: 0;
   --noise: 1;
 }
 ```
+
+Two `-content` slots take the measured ink `#373853` rather than the near-white `#f3fdfb`: on
+the café red `#ce797e`, ink measures **3.59:1** where the near-white measures **3.04:1**, and
+ink is the best the eight measured colours offer for those two slots.
 
 ### 5.3 Dark theme — `game-center`
 
@@ -384,12 +388,12 @@ Slot sketch — every hex below is one of the eight measured values above:
 @plugin "daisyui/theme" {
   name: "game-center";
   default: false;
-  prefersdark: true;
+  prefersdark: false;
   color-scheme: dark;
 
   --color-base-100: #353cae;
   --color-base-200: #355fd9;
-  --color-base-300: #4eb5fe;
+  --color-base-300: #355fd9;
   --color-base-content: #d4fbf9;
 
   --color-primary: #4eb5fe;
@@ -415,6 +419,12 @@ Slot sketch — every hex below is one of the eight measured values above:
   --noise: 0;
 }
 ```
+
+`prefersdark` is `false` here as on `cat-cafe`, so the light theme stays the default whatever
+the operating system asks for and the toggle is the only way into the dark one. The third base
+step takes `#355fd9` rather than the sketch's first choice of `#4eb5fe`: `#d4fbf9` on
+`#4eb5fe` measures only **2.03:1**, so the measured values were reordered to `#355fd9` and all
+three base steps now clear **4.5:1**. `#4eb5fe` stays `primary`.
 
 **The one deliberate consequence.** The darkest colour in the dark palette is `#353cae`, a
 **mid indigo** rather than a near-black, so that theme reads blue, not black, and keeps the
@@ -482,17 +492,19 @@ below are daisyUI slots and the measured palette above, not new tokens.
 **a. Post card** — the show's "painted room with a title on it". A `base-200` panel carrying
 a `2px` `base-content` contour and a hard offset shadow in the ink colour; on hover it lifts
 and its shadow grows, on the overshoot curve. Title in `Baloo 2`; date line small and
-letterspaced; the single hot accent (`error` on `cat-cafe`, `accent` on `game-center`)
-appears as one sparkle on hover only.
+letterspaced; the single hot accent (`error` on `cat-cafe`, `accent` on `game-center`) is
+recorded but not placed — the ornament budget keeps a hover sparkle out of this pass (§5.5).
 
 **b. Nav bar** — thin and quiet. A `base-100` strip with a `2px` `base-content` rule along
 the bottom and a translucent blur behind it. Wordmark in `Baloo 2`, set as text: **do not
 reproduce the show's logo art.** The active link gets a wavy 2px underline — a hand-drawn
 feel from a CSS primitive.
 
-**c. Tag chip** — the sparkle/bow unit. A pill with a `2px` ink contour and a low tint of
-the tag's own colour as its fill, so a tag list reads like a colour-coded sticker sheet;
-pressing flattens the shadow into the contour.
+**c. Tag chip** — the sparkle/bow unit. A pill with a `2px` ink contour and a sticker shadow;
+pressing flattens the shadow into the contour. The colour-coding — a low tint of the tag's own
+colour as its fill, so a tag list reads like a colour-coded sticker sheet — is **deferred**: the
+site has no tag vocabulary, so mapping a tag to a tint would need invented data. Until one
+exists, the ink contour and the sticker shadow carry the intent.
 
 **d. Page header / "title card"** — the strongest idea in the show to reuse. A full-width
 `base-200` panel framed by `2px` ink rules above and below: an eyebrow in small letterspaced
@@ -500,8 +512,10 @@ caps (a date or a section name, like an episode slate), a `Baloo 2` title, and a
 in `Nunito Sans`. The same block is reused on the home page, the blog index, a post and the
 404 — that repetition is what makes it read as a title card rather than a hero.
 
-**e. Primary button** — a `primary`-filled control with a `base-content` contour and the
-same sticker shadow; pressing translates it into its own shadow. Reserve the single hot
+**e. Primary button** — an ink-contoured control on `base-100` with the same sticker shadow;
+pressing translates it into its own shadow. A saturated `primary` fill was the first choice but
+was dropped: it would have to carry body-size text and every `-content` pair tops out at
+**3.89:1**, so the contour carries the emphasis instead. Reserve the single hot
 accent for exactly one thing per screen, so the loudest measured colour keeps meaning
 something.
 

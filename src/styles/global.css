@@ -247,16 +247,14 @@
   --hot: #c548ad;
 }
 
-/* The `ink` and `hot` tokens resolve through the CSS variables each theme sets,
-   so the utilities below follow the active `data-theme` at runtime rather than
-   baking one theme's value into the build. Nothing consumes them yet — the
-   component treatments in ticket #6 will — so they are emitted explicitly. */
-@source inline("text-ink border-ink bg-hot");
-
 @theme {
   --font-display: "Baloo 2", "Nunito Sans", ui-rounded, system-ui, sans-serif;
   --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
 
+  /* The ink and hot tokens resolve through the CSS variables each theme sets,
+     so the `border-ink`, `text-ink` and `bg-hot` utilities follow the active
+     `data-theme` at runtime rather than baking one theme's value into the
+     build. They are spent in the component rules below. */
   --color-ink: var(--ink);
   --color-hot: var(--hot);
 }
@@ -282,24 +280,39 @@
    the hot accent does not (2.0–3.0:1 on the dark ground), so it is not the
    ring. `outline` on the element itself covers links and buttons; the theme
    toggle keeps its checkbox visually hidden, so `:has()` moves the ring onto
-   the label. Nothing here removes an existing affordance. */
-:where(a, button, input, select, summary, textarea, [tabindex]):focus-visible {
-  outline: 3px solid var(--ink);
-  outline-offset: 2px;
-}
-
+   the label. Nothing here removes an existing affordance.
+   `:is()` rather than `:where()` on purpose: `:where()` contributes zero
+   specificity, so the ring would tie with daisyUI's own focus rules and lose
+   on source order; `:is()` gives the list real specificity so the ink ring
+   wins wherever this rule is emitted. */
+:is(a, button, input, select, summary, textarea, [tabindex]):focus-visible,
 .swap:has(input:focus-visible) {
   outline: 3px solid var(--ink);
   outline-offset: 2px;
 }
 
 @layer components {
+  /* The drawn contour, shared: one `2px` ink border for the card, the chip and
+     the two buttons, and the sticker shadow shared by the card and the buttons.
+     The chip's shadow is the same shape at a tighter offset, so it stays in the
+     chip rule (c) rather than here. */
+  .contour-card,
+  .chip,
+  .contour-btn,
+  .contour-icon-btn {
+    @apply border-2 border-ink;
+  }
+
+  .contour-card,
+  .contour-btn,
+  .contour-icon-btn {
+    box-shadow: var(--contour-offset) var(--contour-offset) 0 0 var(--ink);
+  }
+
   /* a. Post card — the show's "painted room with a title on it". */
   .contour-card {
     background-color: var(--color-base-200);
-    border: 2px solid var(--ink);
     border-radius: var(--radius-card);
-    box-shadow: var(--contour-offset) var(--contour-offset) 0 0 var(--ink);
   }
 
   .card-link {
@@ -359,10 +372,9 @@
   .chip {
     display: inline-block;
     padding: 0.05rem 0.6rem;
-    border: 2px solid var(--ink);
     border-radius: 9999px;
     background-color: var(--color-base-200);
-    color: var(--color-base-content);
+    @apply text-ink;
     box-shadow: 2px 2px 0 0 var(--ink);
     font-size: 0.8125rem;
     font-weight: 600;
@@ -411,8 +423,7 @@
     display: inline-block;
     inline-size: 0.6rem;
     block-size: 0.6rem;
-    background-color: var(--hot);
-    border: 2px solid var(--ink);
+    @apply bg-hot border-2 border-ink;
     border-radius: 2px;
   }
 
@@ -434,16 +445,18 @@
      base-100, with the contour and the sticker shadow doing the work. A
      saturated fill would have to carry body-size text and every `-content`
      pair tops out at 3.89:1, so no fill is used. */
+  .contour-btn,
+  .contour-icon-btn {
+    border-radius: 9999px;
+    background-color: var(--color-base-100);
+    @apply text-ink;
+  }
+
   .contour-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     padding: 0.3rem 0.95rem;
-    border: 2px solid var(--ink);
-    border-radius: 9999px;
-    background-color: var(--color-base-100);
-    color: var(--color-base-content);
-    box-shadow: var(--contour-offset) var(--contour-offset) 0 0 var(--ink);
     font-weight: 600;
     line-height: 1.5;
   }
@@ -453,18 +466,17 @@
     place-content: center;
     inline-size: 2.5rem;
     block-size: 2.5rem;
-    border: 2px solid var(--ink);
-    border-radius: 9999px;
-    background-color: var(--color-base-100);
-    color: var(--color-base-content);
-    box-shadow: var(--contour-offset) var(--contour-offset) 0 0 var(--ink);
   }
 
-  /* A disabled pagination control sits pre-pressed: already inside its shadow. */
+  /* A disabled pagination control sits pre-pressed — already inside where its
+     shadow would be — and its contour is muted to base-300. The label stays at
+     full ink, so it clears 4.5:1 against base-100 on both themes (10.93:1 on
+     cat-cafe, 7.87:1 on game-center); the pre-pressed position and the muted
+     border carry "disabled" instead of a wash-out opacity. */
   .contour-btn[aria-disabled="true"] {
     transform: translate(var(--contour-offset), var(--contour-offset));
     box-shadow: none;
-    opacity: 0.65;
+    border-color: var(--color-base-300);
   }
 
   .link-ink {
