@@ -1,0 +1,24 @@
+---
+import { languages } from "../i18n/ui";
+import { getLangFromUrl, switchLangPath, useTranslations } from "../i18n/utils";
+
+interface Props {
+  /** Where this page lives in the other locale. Defaults to swapping the prefix. */
+  alternate?: string;
+}
+
+const { alternate } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const other = lang === "vi" ? "en" : "vi";
+const t = useTranslations(lang);
+const href = alternate ?? switchLangPath(Astro.url.pathname, other);
+---
+
+<a
+  href={href}
+  hreflang={other}
+  class="btn btn-ghost btn-sm"
+  title={t("lang.switch")}
+>
+  {languages[other]}
+</a>

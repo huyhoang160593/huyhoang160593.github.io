@@ -1,0 +1,45 @@
+---
+import { localizePath, useTranslations, type Lang } from "../i18n/utils";
+
+interface Props {
+  currentPage: number;
+  lastPage: number;
+  lang: Lang;
+}
+
+const { currentPage, lastPage, lang } = Astro.props;
+const t = useTranslations(lang);
+const href = (number: number) =>
+  localizePath(number === 1 ? "/blog" : `/blog/page/${number}`, lang);
+const hasPrevious = currentPage > 1;
+const hasNext = currentPage < lastPage;
+---
+
+{lastPage > 1 && (
+  <nav
+    class="mt-10 flex items-center justify-between gap-2"
+    aria-label={t("blog.page")}
+  >
+    {hasPrevious ? (
+      <a href={href(currentPage - 1)} class="btn btn-sm" rel="prev">
+        {t("blog.previous")}
+      </a>
+    ) : (
+      <span class="btn btn-sm btn-disabled" aria-disabled="true">
+        {t("blog.previous")}
+      </span>
+    )}
+    <span class="text-sm text-base-content/60">
+      {t("blog.page")} {currentPage}/{lastPage}
+    </span>
+    {hasNext ? (
+      <a href={href(currentPage + 1)} class="btn btn-sm" rel="next">
+        {t("blog.next")}
+      </a>
+    ) : (
+      <span class="btn btn-sm btn-disabled" aria-disabled="true">
+        {t("blog.next")}
+      </span>
+    )}
+  </nav>
+)}

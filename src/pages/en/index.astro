@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getPosts } from "../../lib/posts";
+import { localizePath, useTranslations } from "../../i18n/utils";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+const posts = (await getPosts(lang)).slice(0, 5);
+---
+
+<BaseLayout title={t("site.name")} description={t("site.tagline")}>
+  <section class="hero py-10">
+    <div class="hero-content text-center">
+      <div class="max-w-xl">
+        <p class="text-base-content/60">{t("home.greeting")}</p>
+        <h1 class="text-4xl font-bold tracking-tight">{t("site.name")}</h1>
+        <p class="py-4">{t("home.intro")}</p>
+      </div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold">{t("home.latest")}</h2>
+      <div class="mt-4 grid gap-4">
+        {posts.map((post) => (
+          <PostCard post={post} lang={lang} />
+        ))}
+      </div>
+      <a href={localizePath("/blog", lang)} class="btn btn-ghost btn-sm mt-4">
+        {t("home.all")}
+      </a>
+    </section>
+  )}
+</BaseLayout>

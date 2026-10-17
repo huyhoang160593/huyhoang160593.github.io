@@ -24,3 +24,5 @@ Use **`nub`** (v0.9.6, all-in-one Node.js toolkit, installed via `mise`) as the 
 - Manage Node versions: `nub node <command>` (install / ls / uninstall / pin)
 
 Lockfile: nub reuses the project's existing lockfile; it does **not** create a `nub`-specific lockfile. Keep the committed lockfile in sync with `package.json`.
+
+This repo commits **`pnpm-lock.yaml`** — the format nub writes while `package.json#packageManager` names pnpm. CI installs with `nub ci` through `nubjs/setup-nub`, not `withastro/action`; see `docs/adr/0001-deploy-with-nub-and-pnpm-lockfile.md`.

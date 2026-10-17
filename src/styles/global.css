@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@plugin 'daisyui' {
+  themes:
+    retro --default,
+    synthwave;
+}
+
+/* Article typography. The @tailwindcss/typography plugin is deliberately not
+   installed yet; this covers the elements Markdown/MDX actually emits. */
+.article {
+  @apply leading-relaxed;
+}
+
+.article :where(h2) {
+  @apply mt-10 mb-4 text-2xl font-semibold tracking-tight;
+}
+
+.article :where(h3) {
+  @apply mt-8 mb-3 text-xl font-semibold;
+}
+
+.article :where(p) {
+  @apply my-4;
+}
+
+.article :where(ul) {
+  @apply my-4 list-disc ps-6;
+}
+
+.article :where(ol) {
+  @apply my-4 list-decimal ps-6;
+}
+
+.article :where(li) {
+  @apply my-1;
+}
+
+.article :where(a) {
+  @apply underline decoration-1 underline-offset-2;
+}
+
+.article :where(code):not(:where(pre code)) {
+  @apply rounded-field bg-base-200 px-1 py-0.5 text-sm;
+}
+
+.article :where(pre) {
+  @apply my-4 overflow-x-auto rounded-box bg-base-200 p-4 text-sm;
+}
+
+.article :where(blockquote) {
+  @apply my-4 border-s-4 border-base-300 ps-4 opacity-80;
+}
+
+.article :where(img) {
+  @apply my-6 rounded-box;
+}
+
+.article :where(hr) {
+  @apply my-8 border-base-300;
+}
