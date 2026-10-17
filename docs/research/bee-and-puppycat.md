@@ -288,18 +288,30 @@ colours of painted backgrounds.
 
 The method, stated once for both palettes:
 
-- decode the source image and sample its pixels on a grid (about 30 000 samples regardless
-  of image size);
+- decode the source image and sample its pixels on a fixed grid — the grid is part of the
+  record, and each palette below states the one its values reproduce under;
 - run **k-means with `k = 12`** initialised from a fixed seed, drop clusters below 0.4 %
   weight, merge clusters whose centroids sit closer than a **merge distance of 8** in RGB,
   and sort the survivors dark → light.
 
-The two settings are load-bearing. At a coarser merge (for instance 14) the small, saturated
-clusters are absorbed into their neighbours and the accents disappear: the cat café loses
-its red roof and its near-white clouds, which are exactly the colours the palette has to
-keep. `k = 12` gives those accents a cluster of their own; a merge distance of 8 folds only
-near-identical clusters. The scripts are reproducible outside this repo and were re-run to
-confirm every value below.
+The merge distance is load-bearing. At a coarser merge (for instance 14) the small,
+saturated clusters are absorbed into their neighbours and the accents disappear: the cat
+café loses its red roof and its near-white clouds, which are exactly the colours the
+palette has to keep. `k = 12` gives those accents a cluster of their own; a merge distance
+of 8 folds only near-identical clusters.
+
+The sampling grid is load-bearing too, and it is **not the same for the two palettes**. The
+dark palette reproduces on a grid of about 30 000 samples whatever the image's size
+(`samples = 30 000`); the light one reproduces on **every third pixel** of the summer panel
+(`stride = 3`). They are not interchangeable: at 30 000 samples the summer panel returns
+`#dcc69f` where the denser grid returns the cream `#f8e2d5` and the straw `#e5da8e` as
+separate clusters, and `#99cca8` in place of the sage `#adbfab`, with three more steps
+shifting by a channel or two. Each palette's values are therefore the ones its own grid
+produces, and the grid is stated beside it.
+
+The scripts are in `tools/palette/`, and were re-run to confirm every value below:
+`check-brief.mjs` does that re-run and fails if a hex recorded here cannot be reproduced
+from the figure and the grid named beside it.
 
 ### 5.2 Light theme — `cat-cafe`
 
@@ -308,7 +320,8 @@ Measured from the **summer panel** (top-left) alone of
 is a cat café. The file is one scene drawn four times, once per season, in a 2×2 sheet, and
 only the top-left summer panel is measured. The other three panels are not averaged in,
 because four lighting conditions averaged together would mute the summer accents the
-palette exists to carry.
+palette exists to carry. Measured on every third pixel, `stride = 3` — see §5.1; the
+30 000-sample grid returns a different, flatter set.
 
 | Hex       | Role in the theme              | daisyUI slot              | Trait                      |
 | --------- | ------------------------------ | ------------------------- | -------------------------- |
@@ -369,7 +382,8 @@ ink is the best the eight measured colours offer for those two slots.
 ### 5.3 Dark theme — `game-center`
 
 Measured from <https://hanstseng.art/wp-content/uploads/2016/11/bpcbgarcade.png>; the scene
-is the game centre / arcade interior.
+is the game centre / arcade interior. Measured on a grid of about 30 000 samples,
+`samples = 30 000` — see §5.1.
 
 | Hex       | Role in the theme               | daisyUI slot          | Trait                      |
 | --------- | ------------------------------- | --------------------- | -------------------------- |

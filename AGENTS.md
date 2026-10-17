@@ -23,6 +23,11 @@ A new guard belongs in `verify`, not in the workflow, so it runs everywhere the
 others do. A guard that needs something CI cannot have — downloaded source
 figures, a browser, a person's eyes — stays local and documents itself.
 
+`tools/` holds the guards and the one-off tooling: `tools/check-design.mjs` is in
+`verify`, and `tools/palette/` is the measurement the theme colours came from —
+its README says how to re-measure them, and `tools/palette/check-brief.mjs` is the
+half that needs the source figures and so stays out of `verify`.
+
 ### Package manager / runtime
 
 Use **`nub`** (v0.9.6, all-in-one Node.js toolkit, installed via `mise`) as the package manager and runtime: `nub install` (reuses the existing lockfile), `nub ci` (clean, frozen), `nub run <script>`, `nub add`, `nubx <bin>` — `nub --help` covers the rest.
