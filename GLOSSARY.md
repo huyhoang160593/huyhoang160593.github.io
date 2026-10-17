@@ -25,7 +25,7 @@ A named group of content entries the site reads: `blog` and `cv`.
 _Avoid_: folder, content type
 
 **Theme**:
-One of the two colour schemes the site ships: `retro` (light, the default) and `synthwave` (dark). A reader's choice is remembered between visits.
+One of the two colour schemes the site ships: `cat-cafe` (light, the default) and `game-center` (dark). A reader's choice is remembered between visits.
 _Avoid_: mode, skin, dark mode
 
 **Page**:

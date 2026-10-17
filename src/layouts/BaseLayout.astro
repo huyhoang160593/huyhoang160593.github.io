@@ -3,6 +3,7 @@ import "../styles/global.css";
 import LanguagePicker from "../components/LanguagePicker.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { getLangFromUrl, localizePath, useTranslations } from "../i18n/utils";
+import { DEFAULT_THEME, THEMES } from "../lib/theme";
 
 interface Props {
   title: string;
@@ -21,7 +22,7 @@ const year = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang={lang} data-theme="retro">
+<html lang={lang} data-theme={DEFAULT_THEME}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,14 +39,19 @@ const year = new Date().getFullYear();
     />
     <meta name="generator" content={Astro.generator} />
     {/* Runs before the first paint so a chosen theme is applied without a
-         flash. Without a saved choice the server-rendered default wins. */}
-    <script is:inline>
+         flash. The theme names come from `../lib/theme`; `define:vars` on an
+         `is:inline` script inlines them here, because this script must not be
+         deferred or bundled. An absent or unrecognised saved value falls back
+         to the default. */}
+    <script
+      is:inline
+      define:vars={{ defaultTheme: DEFAULT_THEME, themes: THEMES }}
+    >
       (function () {
         try {
           const saved = localStorage.getItem("theme");
-          if (saved === "retro" || saved === "synthwave") {
-            document.documentElement.setAttribute("data-theme", saved);
-          }
+          const theme = themes.indexOf(saved) === -1 ? defaultTheme : saved;
+          document.documentElement.setAttribute("data-theme", theme);
         } catch {}
       })();
     </script>
