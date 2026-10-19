@@ -3,7 +3,7 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 /**
- * Posts live in `src/content/blog/<locale>/<slug>.mdx`, so an entry id is
+ * Posts live in `src/content/blog/<locale>/<slug>.mdx`; a Post's id is
  * `vi/my-post` and the URL segment is the part after the locale folder.
  * `translationKey` optionally links a post to its counterpart in the other
  * locale; see docs/adr/0003-i18n-convention.md.
