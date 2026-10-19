@@ -69,7 +69,7 @@ const isAbout = barePath === "/about";
   </head>
   <body class="flex min-h-screen flex-col bg-base-100 text-base-content">
     <header class="site-nav">
-      <nav class="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-4 py-3">
+      <nav class="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-3 px-4 py-3">
         <a
           href={localizePath("/", lang)}
           class="nav-link nav-mark"
@@ -77,7 +77,9 @@ const isAbout = barePath === "/about";
         >
           {t("site.name")}
         </a>
-        <div class="flex items-center gap-2">
+        {/* basis-full puts the link group on its own right-aligned line on
+             narrow screens; sm: restores the single row once it fits. */}
+        <div class="flex basis-full items-center justify-end gap-2 sm:basis-auto">
           <a
             href={localizePath("/blog", lang)}
             class="nav-link text-sm font-semibold"
