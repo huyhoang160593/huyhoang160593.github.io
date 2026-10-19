@@ -29,6 +29,7 @@ const year = new Date().getFullYear();
 const barePath = stripLangPrefix(Astro.url.pathname.replace(/\/+$/, "") || "/");
 const isHome = barePath === "/";
 const isBlog = barePath === "/blog" || barePath.startsWith("/blog/");
+const isAbout = barePath === "/about";
 ---
 
 <!doctype html>
@@ -83,6 +84,13 @@ const isBlog = barePath === "/blog" || barePath.startsWith("/blog/");
             aria-current={isBlog ? "page" : undefined}
           >
             {t("nav.blog")}
+          </a>
+          <a
+            href={localizePath("/about", lang)}
+            class="nav-link text-sm font-semibold"
+            aria-current={isAbout ? "page" : undefined}
+          >
+            {t("nav.about")}
           </a>
           <LanguagePicker alternate={alternate} />
           <ThemeToggle />
