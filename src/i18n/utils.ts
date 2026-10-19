@@ -46,3 +46,21 @@ export function formatDate(date: Date, lang: Lang): string {
     dateStyle: "long",
   }).format(date);
 }
+
+/**
+ * The Post title card's eyebrow: the localized Episode label joined to the
+ * existing date — `Tập 03 · 17 tháng 10 năm 2026`, `Ep. 03 · October 17,
+ * 2026` — or the date alone when the Post declares no episode (drafts may
+ * leave it unset). The number is padded to two digits so a running list
+ * reads in a steady rhythm; 100 and up needs no padding.
+ */
+export function formatEpisodeEyebrow(
+  date: Date,
+  lang: Lang,
+  episode?: number,
+): string {
+  const dateText = formatDate(date, lang);
+  if (episode === undefined) return dateText;
+  const label = ui[lang]["blog.episode"];
+  return `${label} ${String(episode).padStart(2, "0")} · ${dateText}`;
+}

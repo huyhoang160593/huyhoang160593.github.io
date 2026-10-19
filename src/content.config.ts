@@ -3,22 +3,31 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 /**
- * Posts live in `src/content/blog/<locale>/<slug>.mdx`, so an entry id is
+ * Posts live in `src/content/blog/<locale>/<slug>.mdx`; a Post's id is
  * `vi/my-post` and the URL segment is the part after the locale folder.
  * `translationKey` optionally links a post to its counterpart in the other
  * locale; see docs/adr/0003-i18n-convention.md.
  */
 const blog = defineCollection({
   loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    translationKey: z.string().optional(),
-    draft: z.boolean().default(false),
-    tags: z.array(z.string()).default([]),
-  }),
+  schema: z
+    .object({
+      title: z.string(),
+      description: z.string(),
+      pubDate: z.coerce.date(),
+      updatedDate: z.coerce.date().optional(),
+      translationKey: z.string().optional(),
+      draft: z.boolean().default(false),
+      tags: z.array(z.string()).default([]),
+      /** Where the Post sits in the running order (GLOSSARY: Episode).
+       *  Positive, declared explicitly, optional only while drafting. */
+      episode: z.number().int().positive().optional(),
+    })
+    .refine((post) => post.draft || post.episode !== undefined, {
+      message:
+        "a published Post must declare its Episode: `episode`, a positive integer — drafts may leave it unset",
+      path: ["episode"],
+    }),
 });
 
 /**
