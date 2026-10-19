@@ -16,7 +16,7 @@ export const ui = {
     "lang.switch": "Đọc bằng tiếng Anh",
     "home.greeting": "Xin chào, ta là",
     "home.intro":
-      "Chỗ này để viết vài dòng giới thiệu về bản thân. Sửa ở `src/i18n/ui.ts`. (TODO)",
+      "Ta là một kẻ du mục đi qua nhiều vũ trụ — backend, game, hệ điều hành, và giờ là công cụ AI — học cách sống sót khi mọi thứ đổi cách ăn tiền. Nơi này ghi lại những gì ta đã hiểu sai, bị chứng minh sai, và đành tin lại cho đúng. Ngươi cứ lấy nếu hữu dụng.",
     "home.latest": "Bài mới",
     "home.all": "Tất cả bài viết",
     "blog.title": "Bài viết",
@@ -46,7 +46,7 @@ export const ui = {
     "lang.switch": "Read in Vietnamese",
     "home.greeting": "Hi, I am",
     "home.intro":
-      "A few lines about me go here. Edit them in `src/i18n/ui.ts`. (TODO)",
+      "I am a nomad crossing universes — backend, games, operating systems, and now AI tooling — learning to survive while everything changes how it pays. This is where I write down what I got wrong, what proved me wrong, and what I believe instead. Take anything that helps.",
     "home.latest": "Latest posts",
     "home.all": "All posts",
     "blog.title": "Blog",
