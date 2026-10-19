@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TitleCard from "../../components/TitleCard.astro";
+import { useTranslations } from "../../i18n/utils";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+const intro =
+  "By day I build APIs and gateways in TypeScript. When there is time, I leave my own universe for another and learn how to survive there — each place with its own way of staying alive.";
+---
+
+<BaseLayout title={t("nav.about")} description={intro}>
+  <TitleCard
+    eyebrow={t("site.name")}
+    title={t("nav.about")}
+    description={intro}
+  />
+
+  <div class="article mt-8">
+    <h2>The universes</h2>
+    <ul>
+      <li>
+        <strong>The backend/API universe</strong> — Kong Gateway, Fastify, clean
+        architecture, error responses shaped by zod. My repo{" "}
+        <code>express-zod-api-mini-repoduction</code> is misspelled right in its
+        name — "repoduction" — and I leave it that way. Fixing it would lose the
+        point.
+      </li>
+      <li>
+        <strong>The games universe</strong> — Pong and FlappyBird written in
+        ExcaliburJS along with CS50 Game Dev. A course assignment, but written
+        in ExcaliburJS instead of the tool the course prescribed — just to get
+        to live in TypeScript.
+      </li>
+      <li>
+        <strong>The operating-system universe</strong> — CachyOS, mangowm
+        (Wayland), Noctalia; <code>dotfiles</code> is the map of that universe.
+        No sway, no hyprland — mangowm, which googling turns up few results for.
+        The dotfiles are the only map there is.
+      </li>
+      <li>
+        <strong>The AI-agent universe</strong> — <code>puppycat-skills</code>{" "}
+        and the very page you are reading. I keep skills the way I keep a cat,
+        and the house rules are: no making things up, no flattery, and if a plan
+        is bad say it straight.
+      </li>
+      <li>
+        <strong>The universe that dissolved</strong> — .NET/C#, a fashion shop
+        in MVC. There I learned old code, and learned how a universe leaves in
+        silence.
+      </li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>
+      GitHub is where I build everything:{" "}
+      <a href="https://github.com/huyhoang160593">
+        https://github.com/huyhoang160593
+      </a>
+    </p>
+  </div>
+</BaseLayout>

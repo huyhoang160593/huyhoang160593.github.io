@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TitleCard from "../components/TitleCard.astro";
+import { useTranslations } from "../i18n/utils";
+
+const lang = "vi" as const;
+const t = useTranslations(lang);
+const intro =
+  "Ban ngày ta dựng API và gateway bằng TypeScript. Những khi rảnh, ta rời vũ trụ của mình, sang vũ trụ khác học cách sống sót — mỗi nơi một kiểu sinh tồn khác nhau.";
+---
+
+<BaseLayout title={t("nav.about")} description={intro}>
+  <TitleCard
+    eyebrow={t("site.name")}
+    title={t("nav.about")}
+    description={intro}
+  />
+
+  <div class="article mt-8">
+    <h2>Các vũ trụ</h2>
+    <ul>
+      <li>
+        <strong>Vũ trụ backend/API</strong> — Kong Gateway, Fastify, clean
+        architecture, error response chuẩn zod. Repo{" "}
+        <code>express-zod-api-mini-repoduction</code> của ta sai chính tả ngay
+        trong tên — "repoduction" — và ta để đó. Sửa là mất chất.
+      </li>
+      <li>
+        <strong>Vũ trụ game</strong> — Pong và FlappyBird viết bằng ExcaliburJS
+        theo CS50 Game Dev. Bài tập khoá học, nhưng viết bằng ExcaliburJS thay
+        vì công cụ khoá học chỉ định — chỉ để được sống trong TypeScript.
+      </li>
+      <li>
+        <strong>Vũ trụ hệ điều hành</strong> — CachyOS, mangowm (Wayland),
+        Noctalia;
+        <code>dotfiles</code> là bản đồ của vũ trụ đó. Không sway, không
+        hyprland — mangowm, googling ra không được mấy kết quả. Dotfiles là bản
+        đồ duy nhất có.
+      </li>
+      <li>
+        <strong>Vũ trụ AI agent</strong> — <code>puppycat-skills</code> và chính
+        trang ngươi đang đọc. Ta nuôi skills như nuôi mèo, và luật trong nhà là:
+        không bịa, không tâng bốc, thấy plan dở thì nói thẳng.
+      </li>
+      <li>
+        <strong>Vũ trụ đã tan</strong> — .NET/C#, một cái shop thời trang MVC. Ở
+        đó ta học code cũ, và học cả cách một vũ trụ im lặng ra đi.
+      </li>
+    </ul>
+
+    <h2>Liên hệ</h2>
+    <p>
+      GitHub là nơi ta dựng mọi thứ:{" "}
+      <a href="https://github.com/huyhoang160593">
+        https://github.com/huyhoang160593
+      </a>
+    </p>
+  </div>
+</BaseLayout>
