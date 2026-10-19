@@ -8,7 +8,12 @@ import {
   getPosts,
   postSlug,
 } from "../../lib/posts";
-import { formatDate, localizePath, useTranslations } from "../../i18n/utils";
+import {
+  formatDate,
+  formatEpisodeEyebrow,
+  localizePath,
+  useTranslations,
+} from "../../i18n/utils";
 
 export async function getStaticPaths() {
   const posts = await getPosts("vi");
@@ -37,7 +42,7 @@ const alternate = localizePath(
 >
   <article>
     <TitleCard
-      eyebrow={formatDate(post.data.pubDate, lang)}
+      eyebrow={formatEpisodeEyebrow(post.data.pubDate, lang, post.data.episode)}
       title={post.data.title}
       description={post.data.description}
     />
