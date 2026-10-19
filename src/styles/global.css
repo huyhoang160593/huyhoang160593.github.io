@@ -468,14 +468,12 @@
     block-size: 2.5rem;
   }
 
-  /* A disabled or current-locale control sits pre-pressed — already inside
-     where its shadow would be — and its contour is muted to base-300. The
-     label stays at full ink, so it clears 4.5:1 against base-100 on both
-     themes (10.93:1 on cat-cafe, 7.87:1 on game-center); the pre-pressed
-     position and the muted border carry "disabled" instead of a wash-out
-     opacity. */
-  .contour-btn[aria-disabled="true"],
-  .contour-icon-btn[aria-disabled="true"] {
+  /* A disabled pagination control sits pre-pressed — already inside where its
+     shadow would be — and its contour is muted to base-300. The label stays at
+     full ink, so it clears 4.5:1 against base-100 on both themes (10.93:1 on
+     cat-cafe, 7.87:1 on game-center); the pre-pressed position and the muted
+     border carry "disabled" instead of a wash-out opacity. */
+  .contour-btn[aria-disabled="true"] {
     transform: translate(var(--contour-offset), var(--contour-offset));
     box-shadow: none;
     border-color: var(--color-base-300);

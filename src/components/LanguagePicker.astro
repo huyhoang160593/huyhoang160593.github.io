@@ -9,54 +9,25 @@ interface Props {
 const { alternate } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-/* Flags are drawn inline, not fetched and not an emoji: the two glyphs are
-   the whole point of the picker, so they carry their official colours and
-   nothing else moves with them. Emoji flags render differently (or as letters)
-   per platform; a flag font would ship ~250 flags to draw two. */
-const flags = {
-  vi: {
-    hreflang: "vi",
-    /* Flag of Vietnam — red field, gold star. */
-    svg: `<svg viewBox="0 0 30 20" class="h-[13px] w-5" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><path fill="#FFFF00" d="M15 5 16.12 8.45 19.76 8.45 16.82 10.59 17.94 14.05 15 11.91 12.06 14.05 13.18 10.59 10.24 8.45 13.88 8.45Z"/></svg>`,
-  },
-  en: {
-    hreflang: "en",
-    /* Flag of the United States — thirteen stripes, star canton, simplified
-       to what survives at 20px. */
-    svg: `<svg viewBox="0 0 38 20" class="h-[11px] w-5" aria-hidden="true"><rect width="38" height="20" fill="#fff"/><g fill="#B22234"><rect width="38" height="1.54"/><rect y="3.08" width="38" height="1.54"/><rect y="6.15" width="38" height="1.54"/><rect y="9.23" width="38" height="1.54"/><rect y="12.31" width="38" height="1.54"/><rect y="15.38" width="38" height="1.54"/><rect y="18.46" width="38" height="1.54"/></g><rect width="15.2" height="10.77" fill="#3C3B6E"/><g fill="#fff"><circle cx="1.5" cy="1.79" r=".75"/><circle cx="3.9" cy="1.79" r=".75"/><circle cx="6.3" cy="1.79" r=".75"/><circle cx="8.7" cy="1.79" r=".75"/><circle cx="11.1" cy="1.79" r=".75"/><circle cx="13.5" cy="1.79" r=".75"/><circle cx="2.7" cy="3.59" r=".75"/><circle cx="5.1" cy="3.59" r=".75"/><circle cx="7.5" cy="3.59" r=".75"/><circle cx="9.9" cy="3.59" r=".75"/><circle cx="12.3" cy="3.59" r=".75"/><circle cx="1.5" cy="5.39" r=".75"/><circle cx="3.9" cy="5.39" r=".75"/><circle cx="6.3" cy="5.39" r=".75"/><circle cx="8.7" cy="5.39" r=".75"/><circle cx="11.1" cy="5.39" r=".75"/><circle cx="13.5" cy="5.39" r=".75"/><circle cx="2.7" cy="7.18" r=".75"/><circle cx="5.1" cy="7.18" r=".75"/><circle cx="7.5" cy="7.18" r=".75"/><circle cx="9.9" cy="7.18" r=".75"/><circle cx="12.3" cy="7.18" r=".75"/><circle cx="1.5" cy="8.98" r=".75"/><circle cx="3.9" cy="8.98" r=".75"/><circle cx="6.3" cy="8.98" r=".75"/><circle cx="8.7" cy="8.98" r=".75"/><circle cx="11.1" cy="8.98" r=".75"/><circle cx="13.5" cy="8.98" r=".75"/></g></svg>`,
-  },
-} as const;
-
-const order = ["vi", "en"] as const;
 const other = lang === "vi" ? "en" : "vi";
-const otherHref = alternate ?? switchLangPath(Astro.url.pathname, other);
+const href = alternate ?? switchLangPath(Astro.url.pathname, other);
+
+/* One flag: the language you would switch TO. Drawn inline, not fetched and
+   not an emoji — the glyph is the whole point of the picker, so it carries
+   its official colours and nothing else moves with it. Emoji flags render
+   differently (or as letters) per platform; a flag font would ship ~250
+   flags to draw one. */
+const flags = {
+  vi: `<svg viewBox="0 0 30 20" class="h-[13px] w-5" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><path fill="#FFFF00" d="M15 5 16.12 8.45 19.76 8.45 16.82 10.59 17.94 14.05 15 11.91 12.06 14.05 13.18 10.59 10.24 8.45 13.88 8.45Z"/></svg>`,
+  en: `<svg viewBox="0 0 38 20" class="h-[11px] w-5" aria-hidden="true"><rect width="38" height="20" fill="#fff"/><g fill="#B22234"><rect width="38" height="1.54"/><rect y="3.08" width="38" height="1.54"/><rect y="6.15" width="38" height="1.54"/><rect y="9.23" width="38" height="1.54"/><rect y="12.31" width="38" height="1.54"/><rect y="15.38" width="38" height="1.54"/><rect y="18.46" width="38" height="1.54"/></g><rect width="15.2" height="10.77" fill="#3C3B6E"/><g fill="#fff"><circle cx="1.5" cy="1.79" r=".75"/><circle cx="3.9" cy="1.79" r=".75"/><circle cx="6.3" cy="1.79" r=".75"/><circle cx="8.7" cy="1.79" r=".75"/><circle cx="11.1" cy="1.79" r=".75"/><circle cx="13.5" cy="1.79" r=".75"/><circle cx="2.7" cy="3.59" r=".75"/><circle cx="5.1" cy="3.59" r=".75"/><circle cx="7.5" cy="3.59" r=".75"/><circle cx="9.9" cy="3.59" r=".75"/><circle cx="12.3" cy="3.59" r=".75"/><circle cx="1.5" cy="5.39" r=".75"/><circle cx="3.9" cy="5.39" r=".75"/><circle cx="6.3" cy="5.39" r=".75"/><circle cx="8.7" cy="5.39" r=".75"/><circle cx="11.1" cy="5.39" r=".75"/><circle cx="13.5" cy="5.39" r=".75"/><circle cx="2.7" cy="7.18" r=".75"/><circle cx="5.1" cy="7.18" r=".75"/><circle cx="7.5" cy="7.18" r=".75"/><circle cx="9.9" cy="7.18" r=".75"/><circle cx="12.3" cy="7.18" r=".75"/><circle cx="1.5" cy="8.98" r=".75"/><circle cx="3.9" cy="8.98" r=".75"/><circle cx="6.3" cy="8.98" r=".75"/><circle cx="8.7" cy="8.98" r=".75"/><circle cx="11.1" cy="8.98" r=".75"/><circle cx="13.5" cy="8.98" r=".75"/></g></svg>`,
+} as const;
 ---
 
-<div class="flex items-center gap-1.5">
-  {
-    order.map((code) => {
-      const svg = <span set:html={flags[code].svg} />;
-      if (code === lang) {
-        // The flag you are reading: pre-pressed into its own shadow, the same
-        // affordance the disabled pagination control uses. No link, no hover.
-        return (
-          <span class="contour-icon-btn" aria-disabled="true">
-            {svg}
-          </span>
-        );
-      }
-      return (
-        <a
-          href={otherHref}
-          hreflang={flags[code].hreflang}
-          class="contour-icon-btn"
-          aria-label={t("lang.switch")}
-          title={t("lang.switch")}
-        >
-          {svg}
-        </a>
-      );
-    })
-  }
-</div>
+<a
+  href={href}
+  hreflang={other}
+  class="contour-icon-btn"
+  aria-label={t("lang.switch")}
+  title={t("lang.switch")}
+  set:html={flags[other]}
+/>
