@@ -4,8 +4,8 @@
 // anything ships, and `nub run verify` applies the same gate locally and in CI.
 //
 // Presence of `episode` on a published Post is the schema's job
-// (src/content.config.ts, per-entry refine). This checks the only thing no
-// single entry can prove on its own: that no two entries — draft or
+// (src/content.config.ts, per-Post refine). This checks the only thing no
+// single Post can prove on its own: that no two Posts — draft or
 // published — carry the same number. Gaps are allowed; nothing here checks
 // contiguity or date order (spec #12, Implementation Decisions).
 //

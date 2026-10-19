@@ -26,6 +26,7 @@ Create `src/content/blog/<locale>/<slug>.mdx`:
 title: Tiêu đề
 description: Một câu mô tả, dùng cho SEO và cho thẻ bài.
 pubDate: 2026-10-17
+episode: 12 # required on published Posts: a positive integer; drafts may omit it, and `verify` refuses the same number twice
 translationKey: some-slug # optional: links this post to its counterpart
 draft: false # optional: hides the post from a production build
 tags: [meta] # optional
@@ -34,9 +35,9 @@ tags: [meta] # optional
 Nội dung.
 ```
 
-The file name becomes the URL: `src/content/blog/vi/xin-chao.mdx` is `/blog/xin-chao`, and `src/content/blog/en/hello.mdx` is `/en/blog/hello`. Slugs may differ between locales; `translationKey` is what links a post to its translation, and it drives the language switcher.
+The file name becomes the URL: `src/content/blog/<locale>/<slug>.mdx` is `/blog/<slug>` for `vi` (the default locale) and `/en/blog/<slug>` for `en`. Slugs may differ between locales; `translationKey` is what links a post to its translation, and it drives the language switcher.
 
-Two conventions every Post follows — spelled out in `GLOSSARY.md`, not repeated here:
+Two conventions every Post follows — summarized here, with the full definitions in `GLOSSARY.md` and Register additionally in ADR 0005:
 
 - **Register** (`docs/adr/0005-register-vi-ta-nguoi-en-neutral.md`): Vietnamese copy speaks as `ta` to `ngươi`; English stays neutral with `I`/`you`.
 - **Format "Đổi ý"** is the default shape of a Post: old belief → evidence that broke it → new belief → what stays unclear.
